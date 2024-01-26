@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
     public float MovementSpeed = 1f;
     public Transform CameraTransform;
     public Plane GroundPlane = new Plane(Vector3.up, 0);
+
+    public int Health = 100;
 
     public Transform SwordPivot;
     public AnimationCurve SwordSwingCurve;
@@ -87,5 +90,17 @@ public class Player : MonoBehaviour
 
         _swordSwinging = true;
         _swordSwingTimer = 0f;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Health -= damage;
+
+        if (Health <= 0)
+        {
+            // Game Over
+            Debug.Log("Game Over");
+            SceneManager.LoadScene(0);
+        }
     }
 }
