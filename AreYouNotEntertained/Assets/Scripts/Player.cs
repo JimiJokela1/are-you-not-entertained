@@ -96,7 +96,7 @@ public class Player : MonoBehaviour, IDamageDealer
     void OnCollisionEnter(Collision collision)
     {
         Enemy enemy = collision.collider.GetComponent<Enemy>() as Enemy;
-        if (enemy != null)
+        if (enemy != null && collision.collider.tag != "EnemyWeapon")
         {
             enemy.TakeDamage(SwordDamage, transform.position, this);
             GameObject bloodSpatter = Instantiate(BloodSpatterPrefab, BloodSpatterSpawnPoint.position, BloodSpatterSpawnPoint.rotation);
