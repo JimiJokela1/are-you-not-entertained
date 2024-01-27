@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using Debug = UnityEngine.Debug;
 
 public class Player : MonoBehaviour, IDamageDealer
 {
@@ -29,6 +30,7 @@ public class Player : MonoBehaviour, IDamageDealer
 
     public GameObject BloodSpatterPrefab;
     public Transform BloodSpatterSpawnPoint;
+    public float KnockbackDistance = 1f;
 
     void Awake()
     {
@@ -112,7 +114,7 @@ public class Player : MonoBehaviour, IDamageDealer
         _swordSwingTimer = 0f;
     }
 
-    public void TakeDamage(int damage, IDamageDealer damageSource)
+    public void TakeDamage(int damage, Vector3 sourceVector, IDamageDealer damageSource)
     {
         Health -= damage;
 
@@ -124,6 +126,11 @@ public class Player : MonoBehaviour, IDamageDealer
         }
         
         Flash();
+
+        Vector3 knockback = (transform.position - sourceVector);
+        knockback.y = 0f;
+        knockback = knockback.normalized * KnockbackDistance;
+        transform.position += knockback;
     }
 
     void Flash()
@@ -136,5 +143,11 @@ public class Player : MonoBehaviour, IDamageDealer
     void StopFlash()
     {
         GetComponent<MeshRenderer>().material.SetColor("_Color", Color.white);
+    }
+
+    public void CollectPickup()
+    {
+        Score += 25;
+        Debug.Log("Collected pickup");
     }
 }

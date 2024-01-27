@@ -59,7 +59,7 @@ public class Trap : MonoBehaviour, IDamageDealer
     {
         if (other.GetComponent<Player>() && other.tag != "Sword")
         {
-            _player.TakeDamage(Damage, this);
+            _player.TakeDamage(Damage, transform.position, this);
         }
 
         Enemy enemy = other.GetComponent<Enemy>() as Enemy;

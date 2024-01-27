@@ -295,6 +295,7 @@ MonoBehaviour:
   Score: 0
   BloodSpatterPrefab: {fileID: 5793071161176241626, guid: a51dd39a4d84a8d44acde39aa134919b, type: 3}
   BloodSpatterSpawnPoint: {fileID: 3257463968994249277}
+  KnockbackDistance: 0.2
 --- !u!54 &8132706818028985588
 Rigidbody:
   m_ObjectHideFlags: 0

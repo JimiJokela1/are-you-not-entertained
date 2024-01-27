@@ -100,7 +100,7 @@ public class Enemy : MonoBehaviour, IDamageDealer
     {
         if (other.gameObject.GetComponent<Player>() && other.tag != "Sword")
         {
-            _player.TakeDamage(Damage, this);
+            _player.TakeDamage(Damage, transform.position, this);
         }
     }
 
