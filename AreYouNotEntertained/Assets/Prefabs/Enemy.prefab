@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 016e39d68982de845bca478175e603af, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -121,6 +121,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage: 15
   MovementSpeed: 5
+  MinHealth: 18
+  MaxHealth: 32
+  _health: 0
+  KnockbackDistance: 1
+  StunTime: 1
 --- !u!54 &1865139343766959295
 Rigidbody:
   m_ObjectHideFlags: 0

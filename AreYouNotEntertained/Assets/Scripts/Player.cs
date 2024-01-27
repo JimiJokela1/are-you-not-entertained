@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     public float SwordSwingStartAngle;
     public float SwordSwingEndAngle;
     private bool _swordReturningFromSwing = false;
+    public int SwordDamage = 20;
 
     void Awake()
     {
@@ -41,9 +42,12 @@ public class Player : MonoBehaviour
         Ray mousePosInWorldRay = Camera.main.ScreenPointToRay(mousePos);
         if (Physics.Raycast(mousePosInWorldRay, out RaycastHit hit))
         {
-            transform.LookAt(hit.point);
+            Vector3 lookAt = hit.point;
+            lookAt.y = 1f;
+            transform.LookAt(lookAt);
         }
 
+        // Sword swing
         if (_swordSwinging)
         {
             Vector3 swordRot = SwordPivot.localRotation.eulerAngles;
@@ -102,5 +106,19 @@ public class Player : MonoBehaviour
             Debug.Log("Game Over");
             SceneManager.LoadScene(0);
         }
+        
+        Flash();
+    }
+
+    void Flash()
+    {
+        GetComponent<MeshRenderer>().material.SetColor("_Color", Color.red);
+
+        Invoke("StopFlash", 0.1f);
+    }
+
+    void StopFlash()
+    {
+        GetComponent<MeshRenderer>().material.SetColor("_Color", Color.white);
     }
 }
