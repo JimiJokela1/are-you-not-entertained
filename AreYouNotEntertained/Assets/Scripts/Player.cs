@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player : MonoBehaviour, IDamageDealer
 {
@@ -25,6 +26,9 @@ public class Player : MonoBehaviour, IDamageDealer
     public int SwordDamage = 20;
 
     public int Score = 0;
+
+    public GameObject BloodSpatterPrefab;
+    public Transform BloodSpatterSpawnPoint;
 
     void Awake()
     {
@@ -87,6 +91,16 @@ public class Player : MonoBehaviour, IDamageDealer
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
             Swing();
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        Enemy enemy = collision.collider.GetComponent<Enemy>() as Enemy;
+        if (enemy != null)
+        {
+            enemy.TakeDamage(SwordDamage, transform.position, this);
+            GameObject bloodSpatter = Instantiate(BloodSpatterPrefab, BloodSpatterSpawnPoint.position, BloodSpatterSpawnPoint.rotation);
+        }
     }
 
     void Swing()

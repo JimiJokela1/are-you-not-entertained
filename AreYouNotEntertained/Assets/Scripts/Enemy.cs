@@ -40,11 +40,6 @@ public class Enemy : MonoBehaviour, IDamageDealer
         {
             _player.TakeDamage(Damage, this);
         }
-
-        if (collision.collider.tag == "Sword")
-        {
-            TakeDamage(_player.SwordDamage, _player.transform.position, _player);
-        }
     }
 
     public void TakeDamage(int damage, Vector3 sourceVector, IDamageDealer damageSource)
