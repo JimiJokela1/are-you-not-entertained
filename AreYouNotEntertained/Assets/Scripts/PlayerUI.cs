@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerUI : MonoBehaviour
 {
     public TextMeshProUGUI PlayerHealthNumberText;
+    public TextMeshProUGUI PlayerScoreNumberText;
     private Player player;
 
     void Start()
@@ -16,5 +17,6 @@ public class PlayerUI : MonoBehaviour
     void Update()
     {
         PlayerHealthNumberText.text = player.Health.ToString();
+        PlayerScoreNumberText.text = player.Score.ToString();
     }
 }

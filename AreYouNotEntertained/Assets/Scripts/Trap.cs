@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Trap : MonoBehaviour
+public class Trap : MonoBehaviour, IDamageDealer
 {
     public Transform TrapSpikes;
     public AnimationCurve SpikesMoveCurve;
@@ -59,7 +59,13 @@ public class Trap : MonoBehaviour
     {
         if (other.GetComponent<Player>() && other.tag != "Sword")
         {
-            _player.TakeDamage(Damage);
+            _player.TakeDamage(Damage, this);
+        }
+
+        Enemy enemy = other.GetComponent<Enemy>() as Enemy;
+        if (enemy != null)
+        {
+            enemy.TakeDamage(Damage, transform.position, this);
         }
     }
 }

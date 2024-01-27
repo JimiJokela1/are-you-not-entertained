@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IDamageDealer
 {
     Player _player;
     private Rigidbody _rb;
@@ -38,26 +38,31 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<Player>() && collision.collider.tag != "Sword")
         {
-            _player.TakeDamage(Damage);
+            _player.TakeDamage(Damage, this);
         }
 
         if (collision.collider.tag == "Sword")
         {
-            TakeDamage(_player.SwordDamage, _player.transform.position);
+            TakeDamage(_player.SwordDamage, _player.transform.position, _player);
         }
     }
 
-    void TakeDamage(int damage, Vector3 source)
+    public void TakeDamage(int damage, Vector3 sourceVector, IDamageDealer damageSource)
     {
         _health -= damage;
 
         if (_health <= 0)
         {
             Destroy(gameObject);
+
+            if (damageSource is Player)
+            {
+                _player.Score += 10;
+            }
         }
 
         _stunned = true;
-        Vector3 knockback = (transform.position - source).normalized * KnockbackDistance;
+        Vector3 knockback = (transform.position - sourceVector).normalized * KnockbackDistance;
         knockback.y = 0f;
         transform.position += knockback;
 

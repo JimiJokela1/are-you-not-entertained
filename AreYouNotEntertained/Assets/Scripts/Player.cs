@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageDealer
 {
     public float MovementSpeed = 1f;
     public Transform CameraTransform;
@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
     public float SwordSwingEndAngle;
     private bool _swordReturningFromSwing = false;
     public int SwordDamage = 20;
+
+    public int Score = 0;
 
     void Awake()
     {
@@ -96,7 +98,7 @@ public class Player : MonoBehaviour
         _swordSwingTimer = 0f;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, IDamageDealer damageSource)
     {
         Health -= damage;
 
