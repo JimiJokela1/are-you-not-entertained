@@ -39,24 +39,40 @@ public class Player : MonoBehaviour, IDamageDealer
     public float DodgeDistance = 2f;
     public float DodgeTime = 1f;
 
+    private Vector3 _movement;
+
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // Dodge movement
         if (_dodging)
         {
-            transform.position = _dodgeInitialPosition + _dodgeVector * DodgeDistance * _dodgeTimer / DodgeTime;
-            _dodgeTimer += Time.deltaTime;
+            _rb.velocity = _dodgeVector * DodgeDistance * _dodgeTimer / DodgeTime;
+            _dodgeTimer += Time.fixedDeltaTime;
 
             if (_dodgeTimer >= DodgeTime)
             {
                 _dodging = false;
                 _dodgeTimer = 0f;
+                _rb.velocity = Vector3.zero;
             }
+            return;
+        }
+
+        if (_movement != null)
+        {
+            _rb.MovePosition(_rb.position + _movement);
+        }
+    }
+
+    void Update()
+    {
+        if (_dodging)
+        {
             return;
         }
 
@@ -67,9 +83,8 @@ public class Player : MonoBehaviour, IDamageDealer
         }
 
         // Move
-        Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
-        movement *= MovementSpeed;
-        _rb.MovePosition(_rb.position + movement);
+        _movement = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+        _movement *= MovementSpeed;
 
         // Rotate
         Vector3 mousePos = Input.mousePosition;
@@ -188,13 +203,13 @@ public class Player : MonoBehaviour, IDamageDealer
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
         Vector3 dodgeVector = Vector3.zero;
-        if (horizontal > 0f)
+        if (horizontal > 0.1f)
             dodgeVector.x = 1f;
-        else if (horizontal < 0f)
+        else if (horizontal < -0.1f)
             dodgeVector.x = -1f;
-        if (vertical > 0f)
+        if (vertical > 0.1f)
             dodgeVector.z = 1f;
-        else if (vertical < 0f)
+        else if (vertical < -0.1f)
             dodgeVector.z = -1f;
 
         if (dodgeVector.x == 0f && dodgeVector.z == 0f)
