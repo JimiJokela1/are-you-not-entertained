@@ -452,10 +452,6 @@ PrefabInstance:
       propertyPath: CameraTransform
       value: 
       objectReference: {fileID: 963194228}
-    - target: {fileID: 6694101931255560857, guid: 6c0dedf24f90b36479a1a0dc64d11bab, type: 3}
-      propertyPath: KnockbackDistance
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

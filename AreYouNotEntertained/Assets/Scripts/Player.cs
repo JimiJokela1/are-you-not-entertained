@@ -32,6 +32,13 @@ public class Player : MonoBehaviour, IDamageDealer
     public Transform BloodSpatterSpawnPoint;
     public float KnockbackDistance = 1f;
 
+    private bool _dodging = false;
+    private float _dodgeTimer = 0f;
+    private Vector3 _dodgeVector;
+    private Vector3 _dodgeInitialPosition;
+    public float DodgeDistance = 2f;
+    public float DodgeTime = 1f;
+
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -39,6 +46,26 @@ public class Player : MonoBehaviour, IDamageDealer
 
     void Update()
     {
+        // Dodge movement
+        if (_dodging)
+        {
+            transform.position = _dodgeInitialPosition + _dodgeVector * DodgeDistance * _dodgeTimer / DodgeTime;
+            _dodgeTimer += Time.deltaTime;
+
+            if (_dodgeTimer >= DodgeTime)
+            {
+                _dodging = false;
+                _dodgeTimer = 0f;
+            }
+            return;
+        }
+
+        // Dodge control
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            DodgeRoll();
+        }
+
         // Move
         Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
         movement *= MovementSpeed;
@@ -149,5 +176,32 @@ public class Player : MonoBehaviour, IDamageDealer
     {
         Score += 25;
         Debug.Log("Collected pickup");
+    }
+
+    void DodgeRoll()
+    {
+        if (_dodging)
+            return;
+
+        _dodgeInitialPosition = transform.position;
+
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+        Vector3 dodgeVector = Vector3.zero;
+        if (horizontal > 0f)
+            dodgeVector.x = 1f;
+        else if (horizontal < 0f)
+            dodgeVector.x = -1f;
+        if (vertical > 0f)
+            dodgeVector.z = 1f;
+        else if (vertical < 0f)
+            dodgeVector.z = -1f;
+
+        if (dodgeVector.x == 0f && dodgeVector.z == 0f)
+            dodgeVector.z = 1f;
+        
+        dodgeVector.y = 0f;
+        _dodgeVector = dodgeVector.normalized;
+        _dodging = true;
     }
 }
