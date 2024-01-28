@@ -78,7 +78,7 @@ public class Enemy : MonoBehaviour, IDamageDealer
             }
         }
 
-        if (!_attacking || !_attackReturning)
+        if (!_attacking && !_attackReturning)
         {
             transform.LookAt(_player.transform, Vector3.up);
         }
