@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-using static UnityEditor.Experimental.GraphView.GraphView;
 using Debug = UnityEngine.Debug;
 
 public class Player : MonoBehaviour, IDamageDealer
@@ -158,6 +156,9 @@ public class Player : MonoBehaviour, IDamageDealer
 
     public void TakeDamage(int damage, Vector3 sourceVector, IDamageDealer damageSource)
     {
+        if (_dodging)
+            return;
+
         Health -= damage;
 
         if (Health <= 0)
